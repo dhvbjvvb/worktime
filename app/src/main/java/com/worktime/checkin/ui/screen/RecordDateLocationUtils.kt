@@ -161,7 +161,7 @@ fun getLastLocation(context: Context): Pair<Double, Double>? {
 
 @OptIn(kotlinx.coroutines.ExperimentalCoroutinesApi::class)
 suspend fun requestSingleLocation(context: Context): Pair<Double, Double>? {
-    return withContext(Dispatchers.IO) {
+    return withContext(Dispatchers.Main.immediate) {
         withTimeoutOrNull(10_000L) {
             suspendCancellableCoroutine { cont ->
                 val lm = context.getSystemService(Context.LOCATION_SERVICE) as? LocationManager
@@ -169,11 +169,16 @@ suspend fun requestSingleLocation(context: Context): Pair<Double, Double>? {
                 val providers = lm.getProviders(true)
                 if (providers.isEmpty()) { cont.resume(null) {}; return@suspendCancellableCoroutine }
                 var listener: android.location.LocationListener? = null
+                fun removeUpdates() {
+                    listener?.let { activeListener ->
+                        providers.forEach { lm.removeUpdates(activeListener) }
+                    }
+                }
                 listener = android.location.LocationListener { loc ->
                     cont.resume(loc.latitude to loc.longitude) {}
-                    providers.forEach { lm.removeUpdates(listener!!) }
+                    removeUpdates()
                 }
-                cont.invokeOnCancellation { providers.forEach { lm.removeUpdates(listener!!) } }
+                cont.invokeOnCancellation { removeUpdates() }
                 providers.forEach { lm.requestLocationUpdates(it, 0L, 0f, listener!!) }
             }
         }
