@@ -1,0 +1,28 @@
+# Gradle / Android build output
+.gradle/
+.kotlin/
+build/
+app/build/
+
+# Local machine configuration
+local.properties
+.idea/
+*.iml
+
+# Generated packages
+*.apk
+*.ap_
+*.aab
+
+# Logs and temporary files
+*.log
+*.tmp
+*.bak
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Tool caches
+.codegraph/
+.reasonix/
