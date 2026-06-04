@@ -18,7 +18,9 @@
 ## 预览
 
 <div align="center">
-  <img src="./ui-current.png" width="320" alt="工时打卡界面预览" />
+  <img src="./docs/screenshots/records.png" width="260" alt="记录页预览" />
+  <img src="./docs/screenshots/stats.png" width="260" alt="统计页预览" />
+  <img src="./docs/screenshots/profile.png" width="260" alt="我的页预览" />
 </div>
 
 ## 功能概览
